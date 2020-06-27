@@ -1,3 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Diplomata&family=Notable&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+#header {
+  display: block;
+  text-align: center;
+  background: rgb(213, 203, 178);
+  padding: 60px;
+  position: relative;
+  font-size: 60px;
+  width: 100%;
+  border-radius: 10px;
+  font-family: "Diplomata", cursive;
+}
+body {
+  background-color: #0c1f31;
+  font-family: "Balsamiq Sans", cursive;
+  height: 100vh;
+}
+#selectBox {
+  width: 300px;
+  padding: 5px;
+  border-radius: 10px;
+}
+#search {
+  width: 350px;
+  padding: 5px;
+  border-radius: 10px;
+}
+#nav {
+  display: flex;
+  align-items: center;
+  background-color: #b1b493;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 20px;
+
+  padding: 10px;
+}
+#display {
+  font-size: 17px;
+  padding-left: 20px;
+}
 #root {
-  color: red;
+  color: black;
+}
+#main {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  width: 85vw;
+  gap: 30px;
+  margin: auto;
+}
+
+#card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: rgb(172, 151, 102);
+  border-radius: 20px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#title {
+  border: solid #d5cbb2;
+  border-radius: 10px;
+  padding: 30px 30px;
+}
+img {
+  width: 100%;
+  border-radius: 10px;
+}
+p {
+  color: rgb(63, 58, 58);
+}
+@media (max-width: 960px) {
+  #main {
+    grid-template-columns: 1fr;
+  }
 }
