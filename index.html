@@ -9,9 +9,15 @@
   </head>
 
   <body>
-    <header id="header">Tv Show Project</header>
+    <header>
+      <h1>Tv Show Project</h1>
+    </header>
     <nav id="nav">
-      <select name="select" id="selectBox"> </select>
+      <select name="select" id="selectSeries" class="optional">
+        <option> <--Select a Tv Series--> </option>
+      </select>
+
+      <select name="select" id="selectBox" class="optional"> </select>
       <input type="text" id="search" placeholder="Search for an episode.." />
 
       <div id="display"></div>
@@ -19,8 +25,12 @@
     <div id="root"></div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+    <footer>
+      Data comes from
+      <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>
+    </footer>
     <script src="episodes.js"></script>
-
+    <script src=" shows.js"></script>
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>

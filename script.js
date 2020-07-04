@@ -1,76 +1,111 @@
-//You can edit ALL of the code here
-const allEpisodes = getAllEpisodes();
+let allEpisodes;
+let defaultShowId = "82";
+let allShows = getAllShows();
+
+function showAllSeries(showId) {
+  fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
+    .then((response) => {
+      return response.json();
+    })
+    .then(function (data) {
+      allEpisodes = data;
+      makePageForEpisodes(allEpisodes);
+      createDropDownForEpisodes(allEpisodes);
+    })
+    .catch((err) => console.log(err));
+}
 const rootElem = document.getElementById("root");
+const mainElm = document.createElement("div");
+var searchBar = document.getElementById("search");
+var selectSeries = document.getElementById("selectSeries");
 let select = document.getElementById("selectBox");
+const display = document.getElementById("display");
+mainElm.id = "main";
+rootElem.appendChild(mainElm);
 
-function setup() {
-  makePageForEpisodes(allEpisodes);
-}
-
-// creat cards
 function makePageForEpisodes(episodeList) {
-  rootElem.innerHTML = "";
-  const mainElm = document.createElement("div");
-  //Addind a display functionality
-  const display = document.getElementById("display");
+  mainElm.innerHTML = "";
+  episodeList.forEach((episode) => createCards(episode));
   display.innerText = `Displaying ${episodeList.length}/${allEpisodes.length}episodes`;
-  mainElm.id = "main";
-  rootElem.appendChild(mainElm);
-  // iterate through each episode of the array
-  for (let i = 0; i < episodeList.length; i++) {
-    let ss = episodeList[i].season.toString().padStart(2, "0");
-    let ee = episodeList[i].number.toString().padStart(2, "0");
-    //Create Card containers
-    var cardElm = document.createElement("div");
-    cardElm.id = "card";
-    mainElm.appendChild(cardElm);
-    //create title for each card
-    let titleElm = document.createElement("h2");
-    titleElm.id = "title";
-    titleElm.textContent = `${episodeList[i].name}- S${ss}E${ee}`;
-    cardElm.appendChild(titleElm);
-    // insert the images in the cards
-    let imageEl = document.createElement("img");
-    imageEl.src = episodeList[i].image.medium;
-    cardElm.appendChild(imageEl);
-    //create p tag for each card
-    let pElm = document.createElement("p");
-    pElm.innerHTML = episodeList[i].summary;
-    cardElm.appendChild(pElm);
-    //Adding options to the select Box
-    let option = document.createElement("option");
-    option.innerText = `S${ss}E${ee}-${episodeList[i].name}`;
-    option.value = episodeList[i].id;
-    select.appendChild(option);
-  }
 }
-//Adding the first option to the select Box
-var firstOption = document.createElement("option");
-firstOption.innerText = "<--select an episode-->";
-select.appendChild(firstOption);
+
+function createCards(episode) {
+  var cardElm = document.createElement("div");
+  let titleElm = document.createElement("h2");
+  let imageEl = document.createElement("img");
+  let pElm = document.createElement("p");
+  titleElm.textContent =
+    episode.name + creatEpisodeCount(episode.season, episode.number);
+  imageEl.src = episode.image.medium;
+  pElm.innerHTML = episode.summary;
+  mainElm.appendChild(cardElm);
+  cardElm.appendChild(titleElm);
+  cardElm.appendChild(imageEl);
+  cardElm.appendChild(pElm);
+  cardElm.id = "card";
+  titleElm.id = "title";
+}
+function createShowDropdown() {
+  allShows.forEach((show) => {
+    let optionForShows = document.createElement("option");
+    selectSeries.appendChild(optionForShows);
+    optionForShows.value = show.id;
+    optionForShows.innerText = `${show.name}`;
+  });
+}
+function createDropDownForEpisodes(liveEpisodes) {
+  select.innerHTML = "";
+  var firstOption = document.createElement("option");
+  firstOption.innerText = "<--select an episode-->";
+  select.appendChild(firstOption);
+  liveEpisodes.forEach((episode) => {
+    let option = document.createElement("option");
+    select.appendChild(option);
+    option.value = episode.id;
+    option.innerText =
+      creatEpisodeCount(episode.season, episode.number) + episode.name;
+  });
+}
+function creatEpisodeCount(season, episode) {
+  return ` S${season.toString().padStart(2, "0")}E${episode
+    .toString()
+    .padStart(2, "0")} `;
+}
 
 //select Box
-select.addEventListener("change", function () {
+select.addEventListener("change", selectEpisode);
+function selectEpisode() {
   var findEpisode = allEpisodes.find((episode) => episode.id == select.value);
   if (findEpisode == null) {
-    select.addEventListener("click", makePageForEpisodes(allEpisodes));
+    makePageForEpisodes(allEpisodes);
   } else {
     makePageForEpisodes([findEpisode]);
   }
-});
+}
+selectSeries.addEventListener("change", selectShow);
+function selectShow() {
+  var findShow = allShows.find((show) => show.id == selectSeries.value);
+
+  if (findShow == null) {
+    showAllSeries(defaultShowId);
+  } else {
+    showAllSeries(findShow.id);
+  }
+}
 
 //Search Bar
-var searchBar = document.getElementById("search");
 
-searchBar.addEventListener("keyup", function (e) {
-  var search_item = e.target.value.toLowerCase();
+searchBar.addEventListener("keyup", searchTerm);
+
+function searchTerm() {
+  var search_item = searchBar.value.toLowerCase();
   var reducedCards = allEpisodes.filter((episode) => {
-    return (
-      episode.name.toLowerCase().includes(search_item) ||
-      episode.summary.toLowerCase().includes(search_item)
-    );
+    return (episode.name + episode.summary).toLowerCase().includes(search_item);
   });
   makePageForEpisodes(reducedCards);
-});
-
+}
+function setup() {
+  createShowDropdown();
+  showAllSeries(defaultShowId);
+}
 window.onload = setup;

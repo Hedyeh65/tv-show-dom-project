@@ -1,30 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Diplomata&family=Notable&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Sonsie+One&display=swap");
 * {
   box-sizing: border-box;
 }
-#header {
-  display: block;
-  text-align: center;
-  background: rgb(213, 203, 178);
-  padding: 60px;
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px;
   position: relative;
-  font-size: 60px;
   width: 100%;
   border-radius: 10px;
-  font-family: "Diplomata", cursive;
+  background-image: url("film-background-1334067869u9d.jpg");
+  background-size: 100% 100%;
+}
+h1 {
+  color: rgb(241, 214, 137);
+  font-size: 100px;
+  font-family: "Sonsie One", cursive;
+}
+.optional {
+  background-color: rgb(213, 203, 178);
+  width: 300px;
+  padding: 5px;
+  border-radius: 10px;
 }
 body {
   background-color: #0c1f31;
   font-family: "Balsamiq Sans", cursive;
   height: 100vh;
 }
-#selectBox {
-  width: 300px;
-  padding: 5px;
-  border-radius: 10px;
-}
+
 #search {
   width: 350px;
   padding: 5px;
@@ -63,7 +70,7 @@ body {
   padding: 20px;
   background-color: rgb(172, 151, 102);
   border-radius: 20px;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 20px rgba(248, 248, 248, 0.699);
   overflow: hidden;
   cursor: pointer;
 }
@@ -80,8 +87,18 @@ img {
 p {
   color: rgb(63, 58, 58);
 }
+footer {
+  display: flex;
+  background-color: rgb(213, 203, 178);
+  font-size: large;
+  margin-top: 20px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
 @media (max-width: 960px) {
   #main {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(1, 1fr);
   }
 }
