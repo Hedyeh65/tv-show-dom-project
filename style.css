@@ -76,9 +76,14 @@ body {
 }
 
 #title {
+  display: flex;
   border: solid #d5cbb2;
   border-radius: 10px;
   padding: 30px 30px;
+  width: 25vw;
+  height: 15vh;
+  align-items: center;
+  justify-content: center;
 }
 img {
   width: 100%;
@@ -86,6 +91,9 @@ img {
 }
 p {
   color: rgb(63, 58, 58);
+}
+#pContainer {
+  height: 85vh;
 }
 footer {
   display: flex;
@@ -97,8 +105,37 @@ footer {
   width: 100%;
   bottom: 0;
 }
+#cardFooter {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  height: 30vh;
+  position: relative;
+  border: solid #332c19;
+  border-radius: 10px;
+  /* padding: 20px 50px; */
+  background-color: rgb(150, 123, 57);
+  align-items: center;
+}
+
 @media (max-width: 960px) {
   #main {
     grid-template-columns: repeat(1, 1fr);
+  }
+  h1 {
+    font-size: 60px;
+  }
+  p {
+    font-size: 30px;
+  }
+  #cardFooter {
+    width: 70vw;
+    height: 45vh;
+  }
+  #title {
+    width: 60vw;
+  }
+  #pContainer {
+    height: 95vh;
   }
 }

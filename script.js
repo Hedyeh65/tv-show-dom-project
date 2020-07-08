@@ -1,8 +1,13 @@
 let allEpisodes;
 let defaultShowId = "82";
-let allShows = getAllShows();
+let showId;
+let allShows = getAllShows().sort(function (a, b) {
+  if (a.name < b.name) {
+    return -1;
+  }
+});
 
-function showAllSeries(showId) {
+function showAllEpisodes(showId) {
   fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
     .then((response) => {
       return response.json();
@@ -14,6 +19,7 @@ function showAllSeries(showId) {
     })
     .catch((err) => console.log(err));
 }
+
 const rootElem = document.getElementById("root");
 const mainElm = document.createElement("div");
 var searchBar = document.getElementById("search");
@@ -26,7 +32,14 @@ rootElem.appendChild(mainElm);
 function makePageForEpisodes(episodeList) {
   mainElm.innerHTML = "";
   episodeList.forEach((episode) => createCards(episode));
-  display.innerText = `Displaying ${episodeList.length}/${allEpisodes.length}episodes`;
+  display.innerText = `Displaying ${episodeList.length}/${allEpisodes.length} episodes`;
+}
+
+function makePageForShows(allShowsList) {
+  select.innerHTML = "";
+  mainElm.innerHTML = "";
+  allShowsList.forEach((show) => createCardsForShows(show));
+  display.innerText = `Displaying ${allShowsList.length}/${allShows.length} shows`;
 }
 
 function createCards(episode) {
@@ -34,9 +47,15 @@ function createCards(episode) {
   let titleElm = document.createElement("h2");
   let imageEl = document.createElement("img");
   let pElm = document.createElement("p");
+
   titleElm.textContent =
     episode.name + creatEpisodeCount(episode.season, episode.number);
-  imageEl.src = episode.image.medium;
+  if (episode.image == null) {
+    imageEl.src =
+      "https://upmaa-pennmuseum.netdna-ssl.com/collections/images/image_not_available_300.jpg";
+  } else {
+    imageEl.src = episode.image.medium;
+  }
   pElm.innerHTML = episode.summary;
   mainElm.appendChild(cardElm);
   cardElm.appendChild(titleElm);
@@ -45,6 +64,51 @@ function createCards(episode) {
   cardElm.id = "card";
   titleElm.id = "title";
 }
+function createCardsForShows(show) {
+  var cardElm = document.createElement("div");
+  let titleElm = document.createElement("h2");
+  let imageEl = document.createElement("img");
+  let pElm = document.createElement("p");
+  let genres = document.createElement("p");
+  let status = document.createElement("p");
+  let rating = document.createElement("p");
+  let runTime = document.createElement("p");
+  let footer = document.createElement("div");
+  const showLink = document.createElement("a");
+  showLink.id = show.id;
+  showLink.addEventListener("click", (event) => {
+    selectShow(event.target.id);
+    selectSeries.value = show.id;
+  });
+  genres.innerHTML = ` Genres:${show.genres}`;
+  status.innerHTML = ` Status:${show.status}`;
+  rating.innerHTML = ` Rating:${show.rating.average}`;
+  runTime.innerHTML = ` Runtime:${show.runtime}`;
+  showLink.innerText = `${show.name}`;
+  showLink.href = "#";
+  if (show.image == null) {
+    imageEl.src =
+      "https://upmaa-pennmuseum.netdna-ssl.com/collections/images/image_not_available_300.jpg";
+  } else {
+    imageEl.src = show.image.medium;
+  }
+  pElm.innerHTML = show.summary;
+  mainElm.appendChild(cardElm);
+  cardElm.appendChild(titleElm);
+  cardElm.appendChild(imageEl);
+  cardElm.appendChild(pElm);
+  footer.appendChild(genres);
+  footer.appendChild(status);
+  footer.appendChild(rating);
+  footer.appendChild(runTime);
+  cardElm.appendChild(footer);
+  titleElm.appendChild(showLink);
+  pElm.id = "pContainer";
+  cardElm.id = "card";
+  titleElm.id = "title";
+  footer.id = "cardFooter";
+}
+
 function createShowDropdown() {
   allShows.forEach((show) => {
     let optionForShows = document.createElement("option");
@@ -82,30 +146,46 @@ function selectEpisode() {
     makePageForEpisodes([findEpisode]);
   }
 }
-selectSeries.addEventListener("change", selectShow);
-function selectShow() {
-  var findShow = allShows.find((show) => show.id == selectSeries.value);
+let findShow;
 
+selectSeries.addEventListener("change", (event) => {
+  selectShow(event.target.value);
+});
+function selectShow(selectedShowId) {
+  findShow = allShows.find((show) => show.id == selectedShowId);
   if (findShow == null) {
-    showAllSeries(defaultShowId);
+    makePageForShows(allShows);
   } else {
-    showAllSeries(findShow.id);
+    showAllEpisodes(findShow.id);
   }
 }
-
-//Search Bar
-
-searchBar.addEventListener("keyup", searchTerm);
+function search() {
+  if (findShow === null) {
+    searchShows();
+  } else {
+    searchTerm();
+  }
+}
+searchBar.addEventListener("keyup", search);
 
 function searchTerm() {
-  var search_item = searchBar.value.toLowerCase();
+  let search_item = searchBar.value.toLowerCase();
   var reducedCards = allEpisodes.filter((episode) => {
     return (episode.name + episode.summary).toLowerCase().includes(search_item);
   });
   makePageForEpisodes(reducedCards);
 }
+
+function searchShows() {
+  let search_item = searchBar.value.toLowerCase();
+  var reducedCards = allShows.filter((show) => {
+    return (show.name + show.summary).toLowerCase().includes(search_item);
+  });
+  makePageForShows(reducedCards);
+}
+
 function setup() {
   createShowDropdown();
-  showAllSeries(defaultShowId);
+  makePageForShows(allShows);
 }
 window.onload = setup;
