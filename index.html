@@ -3,18 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Hedyeh (Hedyeh65)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
-    </div>
+    <header>
+      <h1>Tv Show Project</h1>
+    </header>
+    <nav id="nav">
+      <button
+        id="button"
+        onclick="document.getElementById('search').value = ''"
+      >
+        Home
+      </button>
+      <select
+        name="select"
+        id="selectSeries"
+        class="optional"
+        onclick="document.getElementById('search').value = ''"
+      >
+        <option> <--Select a Tv Series--> </option>
+      </select>
+      <select
+        name="select"
+        id="selectBox"
+        class="optional"
+        onclick="document.getElementById('search').value = ''"
+      >
+      </select>
+      <input
+        type="text"
+        id="search"
+        placeholder="Search for Tv Show or episode.."
+      />
+
+      <div id="display"></div>
+    </nav>
+    <div id="root"></div>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+    <footer>
+      Data comes from
+      <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>
+    </footer>
     <script src="episodes.js"></script>
-
+    <script src=" shows.js"></script>
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>
