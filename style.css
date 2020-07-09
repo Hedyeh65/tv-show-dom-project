@@ -22,9 +22,10 @@ h1 {
 }
 .optional {
   background-color: rgb(213, 203, 178);
-  width: 300px;
+  width: 200px;
   padding: 5px;
   border-radius: 10px;
+  margin: 5px;
 }
 body {
   background-color: #0c1f31;
@@ -90,7 +91,7 @@ img {
   border-radius: 10px;
 }
 p {
-  color: rgb(63, 58, 58);
+  color: rgb(54, 48, 48);
 }
 #pContainer {
   height: 85vh;
@@ -109,7 +110,7 @@ footer {
   display: flex;
   flex-direction: column;
   width: 25vw;
-  height: 30vh;
+  height: 35vh;
   position: relative;
   border: solid #332c19;
   border-radius: 10px;
@@ -117,7 +118,13 @@ footer {
   background-color: rgb(150, 123, 57);
   align-items: center;
 }
-
+#button {
+  background-color: rgb(172, 151, 102);
+  border: solid #d5cbb2;
+  border-radius: 7px;
+  padding: 5px;
+  margin: 5px;
+}
 @media (max-width: 960px) {
   #main {
     grid-template-columns: repeat(1, 1fr);
@@ -137,5 +144,38 @@ footer {
   }
   #pContainer {
     height: 95vh;
+  }
+}
+@media (min-width: 320px) and (max-width: 767px) {
+  #main {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  h1 {
+    font-size: 40px;
+  }
+  p {
+    font-size: 17px;
+  }
+  #cardFooter {
+    width: 75vw;
+    height: 45vh;
+    font-size: 20px;
+  }
+  #title {
+    width: 70vw;
+  }
+  #pContainer {
+    height: 100vh;
+  }
+  .optional {
+    width: 85vw;
+  }
+  #nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #search {
+    width: 280px;
   }
 }

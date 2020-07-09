@@ -1,6 +1,14 @@
 let allEpisodes;
-let defaultShowId = "82";
 let showId;
+let homeButton = document.getElementById("button");
+homeButton.addEventListener("click", () => {
+  searchBar.disabled = false;
+  searchBar.innerHTML = "";
+  makePageForShows(allShows);
+  selectSeries.value = null;
+  selectSeries.selectedIndex = 0;
+});
+
 let allShows = getAllShows().sort(function (a, b) {
   if (a.name < b.name) {
     return -1;
@@ -76,6 +84,7 @@ function createCardsForShows(show) {
   let footer = document.createElement("div");
   const showLink = document.createElement("a");
   showLink.id = show.id;
+
   showLink.addEventListener("click", (event) => {
     selectShow(event.target.id);
     selectSeries.value = show.id;
@@ -86,6 +95,7 @@ function createCardsForShows(show) {
   runTime.innerHTML = ` Runtime:${show.runtime}`;
   showLink.innerText = `${show.name}`;
   showLink.href = "#";
+  showLink.style.color = "black";
   if (show.image == null) {
     imageEl.src =
       "https://upmaa-pennmuseum.netdna-ssl.com/collections/images/image_not_available_300.jpg";
@@ -138,20 +148,26 @@ function creatEpisodeCount(season, episode) {
 
 //select Box
 select.addEventListener("change", selectEpisode);
+
 function selectEpisode() {
   var findEpisode = allEpisodes.find((episode) => episode.id == select.value);
   if (findEpisode == null) {
     makePageForEpisodes(allEpisodes);
+    searchBar.disabled = false;
   } else {
     makePageForEpisodes([findEpisode]);
+    //searchBar.style.display = "none";
+    searchBar.disabled = true;
   }
 }
 let findShow;
-
 selectSeries.addEventListener("change", (event) => {
   selectShow(event.target.value);
 });
+
 function selectShow(selectedShowId) {
+  searchBar.disabled = false;
+
   findShow = allShows.find((show) => show.id == selectedShowId);
   if (findShow == null) {
     makePageForShows(allShows);
@@ -159,16 +175,21 @@ function selectShow(selectedShowId) {
     showAllEpisodes(findShow.id);
   }
 }
+
 function search() {
-  if (findShow === null) {
+  if (findShow == null) {
     searchShows();
   } else {
-    searchTerm();
+    searchEpisodes();
   }
 }
+
+// function disableSearchBar() {
+//   searchBar.style.display = "none";
+// }
 searchBar.addEventListener("keyup", search);
 
-function searchTerm() {
+function searchEpisodes() {
   let search_item = searchBar.value.toLowerCase();
   var reducedCards = allEpisodes.filter((episode) => {
     return (episode.name + episode.summary).toLowerCase().includes(search_item);
@@ -179,7 +200,9 @@ function searchTerm() {
 function searchShows() {
   let search_item = searchBar.value.toLowerCase();
   var reducedCards = allShows.filter((show) => {
-    return (show.name + show.summary).toLowerCase().includes(search_item);
+    return (show.name + show.summary + show.genres)
+      .toLowerCase()
+      .includes(search_item);
   });
   makePageForShows(reducedCards);
 }
